@@ -223,6 +223,37 @@ body {
 
 .tab-active:hover { background: var(--green-800); color: #fff; border-color: transparent; }
 
+/* Offers tab — distinctive warm-red styling */
+.tab-offers {
+  color: #C0392B;
+  border-color: rgba(192, 57, 43, 0.35);
+  background: rgba(231, 76, 60, 0.06);
+}
+
+.tab-offers:hover {
+  color: #96281B;
+  background: rgba(231, 76, 60, 0.12);
+  border-color: rgba(192, 57, 43, 0.5);
+}
+
+.tab-offers .tab-count {
+  background: rgba(231, 76, 60, 0.14);
+  color: #96281B;
+}
+
+.tab-offers-active,
+.tab-offers-active:hover {
+  background: linear-gradient(135deg, #E74C3C, #C0392B);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 5px 14px -5px rgba(192, 57, 43, 0.65);
+}
+
+.tab-offers-active .tab-count {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
 .tab-count {
   display: inline-flex;
   align-items: center;
@@ -360,6 +391,94 @@ body {
 .badge-hot        { background: var(--red-badge); }
 .badge-veg        { background: var(--green-700); }
 .badge-bestseller { background: #2E2A24; }
+
+/* Sale / discount ribbon — bold & unmissable */
+.sale-badge {
+  position: absolute;
+  top: 0.75rem;
+  inset-inline-end: -0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.9rem 0.35rem 1.1rem;
+  border-radius: 0.6rem 0 0 0.6rem;
+  background: linear-gradient(135deg, #E74C3C 0%, #C0392B 55%, #96281B 100%);
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  border-inline-end: none;
+  box-shadow:
+    0 6px 18px rgba(192, 57, 43, 0.55),
+    0 0 0 3px rgba(231, 76, 60, 0.18);
+  overflow: hidden;
+  z-index: 5;
+  animation: sale-wiggle 3s ease-in-out infinite;
+}
+
+/* Folded ribbon tail under the edge */
+.sale-badge::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  inset-inline-end: 0;
+  border-style: solid;
+  border-width: 0.32rem;
+  border-color: #6E1D13 transparent transparent #6E1D13;
+}
+
+html[dir="rtl"] .sale-badge::before {
+  border-color: #6E1D13 #6E1D13 transparent transparent;
+}
+
+/* Shine sweep across the ribbon */
+.sale-badge::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  inset-inline-start: -60%;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: skewX(-20deg);
+  animation: sale-shine 2.6s ease-in-out infinite;
+}
+
+@keyframes sale-shine {
+  0%, 55%  { inset-inline-start: -60%; }
+  100%     { inset-inline-start: 130%; }
+}
+
+@keyframes sale-wiggle {
+  0%, 86%, 100% { transform: rotate(0deg); }
+  90%           { transform: rotate(-2.5deg) scale(1.05); }
+  94%           { transform: rotate(2deg) scale(1.05); }
+  98%           { transform: rotate(-1deg); }
+}
+
+.sale-badge svg { flex-shrink: 0; }
+
+.sale-badge-lg {
+  top: 4.25rem; /* clear of the modal close button (same side in RTL) */
+  font-size: 0.95rem;
+  padding: 0.45rem 1.1rem 0.45rem 1.3rem;
+}
+
+/* Crossed-out original price */
+.price-old {
+  position: relative;
+  margin-inline-end: 0.3rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--red-badge);
+  text-decoration-thickness: 1.5px;
+}
+
+.price-old-lg { font-size: 1rem; }
+.price-old-sm { font-size: 0.7rem; margin-inline-end: 0.2rem; }
 
 .card-body {
   display: flex;
@@ -699,6 +818,43 @@ body {
 .mobile-link { color: var(--ink); }
 .mobile-link:hover { background: var(--line); }
 .mobile-link-active { background: var(--green-800); color: #fff; font-weight: 600; }
+
+/* Offers link styling (navbar + mobile menu) */
+.nav-link-offers {
+  position: relative;
+  color: #FFD9CF;
+  font-weight: 600;
+}
+
+.nav-link-offers:hover { color: #fff; background: rgba(231, 76, 60, 0.28); }
+
+.navbar-scrolled .nav-link-offers { color: #C0392B; }
+.navbar-scrolled .nav-link-offers:hover { color: #96281B; background: rgba(231, 76, 60, 0.12); }
+
+.nav-link-offers.nav-link-active,
+.navbar-scrolled .nav-link-offers.nav-link-active {
+  background: linear-gradient(135deg, #E74C3C, #C0392B);
+  color: #fff;
+}
+
+/* Blinking spark dot on the offers nav link */
+.offers-spark {
+  display: inline-block;
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-inline-end: 0.3rem;
+  border-radius: 50%;
+  background: #E74C3C;
+  vertical-align: middle;
+  box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.6);
+  animation: pulse 1.6s infinite;
+}
+
+.mobile-link-offers { color: #C0392B; font-weight: 600; }
+.mobile-link-offers.mobile-link-active {
+  background: linear-gradient(135deg, #E74C3C, #C0392B);
+  color: #fff;
+}
 
 .drop-enter-active, .drop-leave-active { transition: opacity 0.22s ease, transform 0.22s ease; }
 .drop-enter-from, .drop-leave-to { opacity: 0; transform: translateY(-8px); }

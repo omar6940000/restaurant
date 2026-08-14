@@ -10,6 +10,7 @@ createApp({
 
     const categories = [
       { id: 'all',        label: 'الكل' },
+      { id: 'offers',     label: 'العروض' },
       { id: 'popular',    label: 'الأكثر طلباً' },
       { id: 'appetizers', label: 'المقبلات' },
       { id: 'mains',      label: 'الأطباق الرئيسية' },
@@ -93,9 +94,9 @@ createApp({
         rating: 4.8,
         ingredients: ['عجينة إيطالية', 'صلصة طماطم', 'فلفل ملوّن', 'زيتون أسود', 'مشروم', 'موتزاريلا'],
         sizes: [
-          { label: 'صغير', price: 120 },
-          { label: 'وسط',  price: 160 },
-          { label: 'كبير', price: 200 },
+          { label: 'صغير', price: 120, oldPrice: 145 },
+          { label: 'وسط',  price: 160, oldPrice: 190 },
+          { label: 'كبير', price: 200, oldPrice: 240 },
         ],
         defaultSize: 'وسط',
         image: 'https://images.pexels.com/photos/5640015/pexels-photo-5640015.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',
@@ -106,6 +107,7 @@ createApp({
         description: 'لحم بقري ١٨٠ جم مشوي على الفحم مع جبنة الشيدر الذائبة والبصل المكرمل والخس وصوص الدار الخاص',
         category: 'mains',
         price: 185,
+        oldPrice: 230,
         tags: ['bestseller'],
         popular: true,
         badge: { type: 'bestseller', label: 'الأكثر مبيعاً' },
@@ -166,6 +168,7 @@ createApp({
         description: 'متبل باذنجان مدخن، لبنة بالنعناع، محمرة حارة، ورق عنب محشي، ومخللات مشكلة',
         category: 'appetizers',
         price: 95,
+        oldPrice: 120,
         tags: ['veg', 'bestseller'],
         popular: true,
         badge: { type: 'bestseller', label: 'الأكثر مبيعاً' },
@@ -433,6 +436,7 @@ createApp({
           name: item.name,
           size,
           unitPrice: currentPrice(item),
+          oldUnitPrice: currentOldPrice(item),
           qty,
           image: item.image,
         });
@@ -595,6 +599,8 @@ createApp({
       return items.filter((item) => {
         if (activeCategory.value === 'popular') {
           if (!item.popular) return false;
+        } else if (activeCategory.value === 'offers') {
+          if (!isOnSale(item)) return false;
         } else if (activeCategory.value !== 'all' && item.category !== activeCategory.value) {
           return false;
         }
@@ -629,6 +635,7 @@ createApp({
       categories.forEach((cat) => {
         if (cat.id === 'all') counts[cat.id] = items.length;
         else if (cat.id === 'popular') counts[cat.id] = items.filter((i) => i.popular).length;
+        else if (cat.id === 'offers') counts[cat.id] = items.filter((i) => isOnSale(i)).length;
         else counts[cat.id] = items.filter((i) => i.category === cat.id).length;
       });
       return counts;
@@ -644,6 +651,31 @@ createApp({
       if (!item.sizes) return item.price;
       const size = item.sizes.find((s) => s.label === selectedSizes[item.id]);
       return size ? size.price : item.sizes[0].price;
+    };
+
+    // Original (pre-discount) price for the current selection, or null if not on offer
+    const currentOldPrice = (item) => {
+      if (!item.sizes) return item.oldPrice || null;
+      const size = item.sizes.find((s) => s.label === selectedSizes[item.id]) || item.sizes[0];
+      return size.oldPrice || null;
+    };
+
+    const isOnSale = (item) =>
+      item.oldPrice ? true : !!(item.sizes && item.sizes.some((s) => s.oldPrice));
+
+    // Discount percentage for the badge (based on current selection or first discounted size)
+    const discountPercent = (item) => {
+      let price, old;
+      if (item.sizes) {
+        const size = item.sizes.find((s) => s.label === selectedSizes[item.id]) || item.sizes[0];
+        const ref = size.oldPrice ? size : item.sizes.find((s) => s.oldPrice);
+        if (!ref) return 0;
+        price = ref.price; old = ref.oldPrice;
+      } else {
+        if (!item.oldPrice) return 0;
+        price = item.price; old = item.oldPrice;
+      }
+      return Math.round((1 - price / old) * 100);
     };
 
     // Arabic-Indic numerals: 160 -> ١٦٠ / 4.7 -> ٤٫٧
@@ -665,7 +697,7 @@ createApp({
       checkoutStep, orderType, customer, formErrors,
       // actions
       toggleFilter, selectSize, resetFilters,
-      currentPrice, formatPrice,
+      currentPrice, currentOldPrice, isOnSale, discountPercent, formatPrice,
       openItem, closeItem, scrollTop, goToCategory,
       goToSlide, nextSlide, prevSlide,
       addToCart, changeQty, removeLine, clearCart, checkout,
