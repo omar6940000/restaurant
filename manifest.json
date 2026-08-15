@@ -1,24 +1,22 @@
 {
   "name": "مذاق الدار | قائمة الطعام",
   "short_name": "مذاق الدار",
-  "description": "استمتع بأشهر وألذ الأطباق مع قائمة طعام مذاق الدار",
   "icons": [
     {
       "src": "./download.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "./download.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ],
   "start_url": "/",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#111827",
-  "theme_color": "#111827"
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff"
 }
