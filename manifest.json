@@ -1,6 +1,7 @@
 {
-  "name": "مذاق الدار",
+  "name": "مذاق الدار | قائمة الطعام",
   "short_name": "مذاق الدار",
+  "description": "استمتع بأشهر وألذ الأطباق مع قائمة طعام مذاق الدار",
   "icons": [
     {
       "src": "./download.png",
@@ -17,6 +18,7 @@
   ],
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff"
+  "orientation": "portrait",
+  "background_color": "#111827",
+  "theme_color": "#111827"
 }
