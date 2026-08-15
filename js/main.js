@@ -6,7 +6,7 @@ const { createApp, reactive, ref, computed, onMounted, onBeforeUnmount, watch } 
 
 createApp({
   setup() {
-    /* ---------- Categories & filters ---------- */
+    /* ---------- Categories ---------- */
 
     const categories = [
       { id: 'all',        label: 'الكل' },
@@ -15,12 +15,6 @@ createApp({
       { id: 'appetizers', label: 'المقبلات' },
       { id: 'mains',      label: 'الأطباق الرئيسية' },
       { id: 'drinks',     label: 'المشروبات' },
-    ];
-
-    const quickFilters = [
-      { id: 'hot',        label: 'حار' },
-      { id: 'bestseller', label: 'الأكثر مبيعاً' },
-      { id: 'veg',        label: 'نباتي' },
     ];
 
     /* ---------- Hero slider ---------- */
@@ -72,13 +66,10 @@ createApp({
         description: 'مكرونة بيني مطهية بصلصة الطماطم الحارة مع الفلفل الأحمر والريحان الطازج وجبنة البارميزان المبشورة',
         category: 'mains',
         price: 145,
-        tags: ['hot'],
         popular: true,
-        badge: { type: 'hot', label: 'حار' },
         prepTime: 20,
         calories: 640,
         rating: 4.7,
-        ingredients: ['مكرونة بيني', 'صلصة طماطم', 'فلفل أحمر حار', 'ريحان طازج', 'بارميزان', 'زيت زيتون'],
         image: 'https://images.pexels.com/photos/1460872/pexels-photo-1460872.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',
       },
       {
@@ -86,13 +77,10 @@ createApp({
         name: 'بيتزا الخضار',
         description: 'عجينة إيطالية طازجة بصلصة الطماطم مع الفلفل الملوّن والزيتون والمشروم وجبنة الموتزاريلا',
         category: 'mains',
-        tags: ['veg'],
         popular: true,
-        badge: { type: 'veg', label: 'نباتي' },
         prepTime: 25,
         calories: 780,
         rating: 4.8,
-        ingredients: ['عجينة إيطالية', 'صلصة طماطم', 'فلفل ملوّن', 'زيتون أسود', 'مشروم', 'موتزاريلا'],
         sizes: [
           { label: 'صغير', price: 120, oldPrice: 145 },
           { label: 'وسط',  price: 160, oldPrice: 190 },
@@ -108,13 +96,10 @@ createApp({
         category: 'mains',
         price: 185,
         oldPrice: 230,
-        tags: ['bestseller'],
         popular: true,
-        badge: { type: 'bestseller', label: 'الأكثر مبيعاً' },
         prepTime: 18,
         calories: 850,
         rating: 4.9,
-        ingredients: ['لحم بقري ١٨٠ جم', 'جبنة شيدر', 'بصل مكرمل', 'خس طازج', 'صوص الدار', 'خبز بريوش'],
         image: 'https://images.pexels.com/photos/8305726/pexels-photo-8305726.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',
       },
       {
@@ -123,13 +108,10 @@ createApp({
         description: 'تشكيلة فاخرة من الكفتة وشيش الطاووق وريش الضاني، تقدم مع أرز بسمتي وخبز بلدي وسلطات متنوعة',
         category: 'mains',
         price: 320,
-        tags: ['bestseller'],
         popular: true,
-        badge: { type: 'bestseller', label: 'الأكثر مبيعاً' },
         prepTime: 35,
         calories: 1100,
         rating: 4.9,
-        ingredients: ['كفتة', 'شيش طاووق', 'ريش ضاني', 'أرز بسمتي', 'خبز بلدي', 'سلطات مشكلة'],
         image: 'https://images.pexels.com/photos/4899822/pexels-photo-4899822.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',
       },
       {
@@ -138,13 +120,10 @@ createApp({
         description: 'لحم ضاني مفروم متبل بالبهارات الشرقية الحارة، يشوى على الفحم ويقدم مع خبز مشروح وبصل سماقي',
         category: 'mains',
         price: 260,
-        tags: ['hot'],
         popular: false,
-        badge: { type: 'hot', label: 'حار' },
         prepTime: 30,
         calories: 720,
         rating: 4.6,
-        ingredients: ['لحم ضاني مفروم', 'بهارات شرقية', 'بقدونس', 'بصل سماقي', 'خبز مشروح'],
         image: 'https://images.pexels.com/photos/17303312/pexels-photo-17303312.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',
       },
       {
@@ -153,13 +132,10 @@ createApp({
         description: 'حمص مهروس بالطحينة وزيت الزيتون البكر وعصير الليمون الطازج، يقدم مع خبز محمص',
         category: 'appetizers',
         price: 55,
-        tags: ['veg'],
         popular: false,
-        badge: { type: 'veg', label: 'نباتي' },
         prepTime: 10,
         calories: 320,
         rating: 4.5,
-        ingredients: ['حمص', 'طحينة', 'زيت زيتون بكر', 'ليمون', 'كمون', 'خبز محمص'],
         image: 'https://images.pexels.com/photos/5083910/pexels-photo-5083910.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',
       },
       {
@@ -169,13 +145,10 @@ createApp({
         category: 'appetizers',
         price: 95,
         oldPrice: 120,
-        tags: ['veg', 'bestseller'],
         popular: true,
-        badge: { type: 'bestseller', label: 'الأكثر مبيعاً' },
         prepTime: 15,
         calories: 450,
         rating: 4.8,
-        ingredients: ['متبل باذنجان', 'لبنة بالنعناع', 'محمرة حارة', 'ورق عنب', 'مخللات مشكلة'],
         image: 'https://images.pexels.com/photos/11161412/pexels-photo-11161412.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',
       },
       {
@@ -184,13 +157,10 @@ createApp({
         description: 'جبنة بيضاء بالطماطم والزعتر، زيتون متبل، فلفل مشوي، وخضروات طازجة من المزرعة',
         category: 'appetizers',
         price: 80,
-        tags: ['veg'],
         popular: false,
-        badge: { type: 'veg', label: 'نباتي' },
         prepTime: 10,
         calories: 380,
         rating: 4.4,
-        ingredients: ['جبنة بيضاء', 'طماطم', 'زعتر', 'زيتون متبل', 'فلفل مشوي', 'خضروات طازجة'],
         image: 'https://images.pexels.com/photos/2452284/pexels-photo-2452284.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',
       },
       {
@@ -198,13 +168,10 @@ createApp({
         name: 'عصير مانجو طازج',
         description: 'مانجو بلدي طازج ١٠٠٪ بدون أي إضافات صناعية، يقدم مثلجاً مع شرائح المانجو',
         category: 'drinks',
-        tags: ['veg', 'bestseller'],
         popular: true,
-        badge: { type: 'bestseller', label: 'الأكثر مبيعاً' },
         prepTime: 5,
         calories: 210,
         rating: 4.9,
-        ingredients: ['مانجو بلدي', 'ثلج مجروش', 'شرائح مانجو طازجة'],
         sizes: [
           { label: 'وسط',  price: 45 },
           { label: 'كبير', price: 60 },
@@ -218,13 +185,10 @@ createApp({
         description: 'عصير ليمون طبيعي منعش مع أوراق النعناع الطازج والثلج المجروش',
         category: 'drinks',
         price: 40,
-        tags: ['veg'],
         popular: false,
-        badge: { type: 'veg', label: 'نباتي' },
         prepTime: 5,
         calories: 120,
         rating: 4.6,
-        ingredients: ['ليمون طازج', 'نعناع', 'ثلج مجروش', 'سكر'],
         image: 'https://images.pexels.com/photos/2109099/pexels-photo-2109099.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',
       },
       {
@@ -233,13 +197,10 @@ createApp({
         description: 'مزيج منعش من الفواكه الموسمية الطازجة مع لمسة من الليمون والنعناع',
         category: 'drinks',
         price: 55,
-        tags: ['veg'],
         popular: false,
-        badge: null,
         prepTime: 7,
         calories: 180,
         rating: 4.5,
-        ingredients: ['فواكه موسمية', 'ليمون', 'نعناع', 'ثلج'],
         image: 'https://images.pexels.com/photos/36268520/pexels-photo-36268520.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',
       },
       {
@@ -248,13 +209,10 @@ createApp({
         description: 'شرائح شاورما لحم متبلة على الطريقة الشامية مع أرز أبيض وبطاطس ذهبية وصوص الثومية',
         category: 'mains',
         price: 175,
-        tags: [],
         popular: false,
-        badge: null,
         prepTime: 22,
         calories: 890,
         rating: 4.7,
-        ingredients: ['شاورما لحم', 'أرز أبيض', 'بطاطس ذهبية', 'ثومية', 'مخلل خيار'],
         image: 'https://images.pexels.com/photos/18062061/pexels-photo-18062061.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',
       },
     ];
@@ -337,12 +295,27 @@ createApp({
 
     const isLoading        = ref(true);
     const isScrolled       = ref(false);
-    const isMobileMenuOpen = ref(false);
     const selectedItem     = ref(null);
     const modalQty         = ref(1);
     const searchQuery      = ref('');
     const activeCategory   = ref('all');
-    const activeFilters    = ref([]);
+    const isFilterOpen     = ref(false);
+    const priceRange       = ref('all');
+    const sortBy           = ref('default');
+
+    const priceRanges = [
+      { id: 'all',   label: 'كل الأسعار' },
+      { id: 'lt100', label: 'أقل من ١٠٠ ج.م' },
+      { id: 'mid',   label: '١٠٠ – ٢٠٠ ج.م' },
+      { id: 'gt200', label: 'أكثر من ٢٠٠ ج.م' },
+    ];
+
+    const sortOptions = [
+      { id: 'default',    label: 'الترتيب الافتراضي' },
+      { id: 'price-asc',  label: 'السعر: من الأقل للأعلى' },
+      { id: 'price-desc', label: 'السعر: من الأعلى للأقل' },
+      { id: 'rating',     label: 'الأعلى تقييماً' },
+    ];
 
     const selectedSizes = reactive({});
     items.forEach((item) => {
@@ -351,7 +324,7 @@ createApp({
 
     /* ---------- Cart (order collection) ---------- */
 
-    const RESTAURANT_WHATSAPP = '201280402765'; // رقم واتساب المطعم
+    const RESTAURANT_WHATSAPP = '201000000000'; // رقم واتساب المطعم
 
     const cart = ref([]);
     const isCartOpen = ref(false);
@@ -497,7 +470,7 @@ createApp({
     /* ---------- Lifecycle ---------- */
 
     onMounted(() => {
-      // Preload the first hero slide, then dismiss the splash screen
+      // Preload only the first hero slide, then dismiss the splash screen
       const hero = new Image();
       hero.src = heroSlides[0].image;
       const dismiss = () => setTimeout(() => { isLoading.value = false; }, 900);
@@ -527,14 +500,7 @@ createApp({
 
     const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    const goToCategory = (id) => {
-      activeCategory.value = id;
-      const target = document.getElementById('menu-section');
-      if (target) {
-        const y = target.getBoundingClientRect().top + window.scrollY - 80;
-        window.scrollTo({ top: y, behavior: 'smooth' });
-      }
-    };
+
 
     /* ---------- Product modal ---------- */
 
@@ -548,13 +514,13 @@ createApp({
       if (e.key === 'Escape') {
         if (selectedItem.value) { closeItem(); return; }
         if (isCartOpen.value)   { isCartOpen.value = false; return; }
-        isMobileMenuOpen.value = false;
+        if (isFilterOpen.value) { isFilterOpen.value = false; }
       }
     };
 
     // Lock body scroll while a modal/drawer is open
-    watch([selectedItem, isCartOpen], ([item, cartOpen]) => {
-      document.body.classList.toggle('no-scroll', !!item || cartOpen);
+    watch([selectedItem, isCartOpen, isFilterOpen], ([item, cartOpen, filterOpen]) => {
+      document.body.classList.toggle('no-scroll', !!item || cartOpen || filterOpen);
     });
 
     // Reset the checkout flow when the drawer closes or the cart empties
@@ -568,11 +534,6 @@ createApp({
 
     /* ---------- Filtering actions ---------- */
 
-    const toggleFilter = (id) => {
-      const idx = activeFilters.value.indexOf(id);
-      idx === -1 ? activeFilters.value.push(id) : activeFilters.value.splice(idx, 1);
-    };
-
     const selectSize = (itemId, sizeLabel) => {
       selectedSizes[itemId] = sizeLabel;
     };
@@ -580,7 +541,8 @@ createApp({
     const resetFilters = () => {
       searchQuery.value = '';
       activeCategory.value = 'all';
-      activeFilters.value = [];
+      priceRange.value = 'all';
+      sortBy.value = 'default';
     };
 
     /* ---------- Derived state ---------- */
@@ -596,7 +558,7 @@ createApp({
     const filteredItems = computed(() => {
       const q = normalize(searchQuery.value.toLowerCase());
 
-      return items.filter((item) => {
+      const result = items.filter((item) => {
         if (activeCategory.value === 'popular') {
           if (!item.popular) return false;
         } else if (activeCategory.value === 'offers') {
@@ -605,7 +567,11 @@ createApp({
           return false;
         }
 
-        if (!activeFilters.value.every((f) => item.tags.includes(f))) return false;
+        // Price range
+        const p = currentPrice(item);
+        if (priceRange.value === 'lt100' && p >= 100) return false;
+        if (priceRange.value === 'mid'   && (p < 100 || p > 200)) return false;
+        if (priceRange.value === 'gt200' && p <= 200) return false;
 
         if (q && !normalize(item.name).includes(q) && !normalize(item.description).includes(q)) {
           return false;
@@ -613,6 +579,13 @@ createApp({
 
         return true;
       });
+
+      // Sorting
+      if (sortBy.value === 'price-asc')  result.sort((a, b) => currentPrice(a) - currentPrice(b));
+      if (sortBy.value === 'price-desc') result.sort((a, b) => currentPrice(b) - currentPrice(a));
+      if (sortBy.value === 'rating')     result.sort((a, b) => b.rating - a.rating);
+
+      return result;
     });
 
     /* ---------- Pagination: 8 products per screen ---------- */
@@ -625,9 +598,9 @@ createApp({
     const showMore = () => { visibleCount.value += PAGE_SIZE; };
 
     // Reset pagination whenever the filters change
-    watch([searchQuery, activeCategory, activeFilters], () => {
+    watch([searchQuery, activeCategory, priceRange, sortBy], () => {
       visibleCount.value = PAGE_SIZE;
-    }, { deep: true });
+    });
 
     // Item count per category tab (for the filter panel badges)
     const categoryCounts = computed(() => {
@@ -642,8 +615,19 @@ createApp({
     });
 
     const hasActiveFilters = computed(() =>
-      !!searchQuery.value || activeCategory.value !== 'all' || activeFilters.value.length > 0
+      !!searchQuery.value || activeCategory.value !== 'all' ||
+      priceRange.value !== 'all' || sortBy.value !== 'default'
     );
+
+    // Number of active filter criteria (badge on the floating filter button)
+    const activeFilterCount = computed(() => {
+      let n = 0;
+      if (searchQuery.value) n++;
+      if (activeCategory.value !== 'all') n++;
+      if (priceRange.value !== 'all') n++;
+      if (sortBy.value !== 'default') n++;
+      return n;
+    });
 
     /* ---------- Helpers ---------- */
 
@@ -684,21 +668,22 @@ createApp({
 
     return {
       // data
-      categories, quickFilters, heroSlides,
+      categories, heroSlides,
       // state
-      isLoading, isScrolled, isMobileMenuOpen,
-      selectedItem, modalQty, searchQuery, activeCategory, activeFilters,
+      isLoading, isScrolled,
+      selectedItem, modalQty, searchQuery, activeCategory,
       selectedSizes, filteredItems, currentSlide,
-      categoryCounts, hasActiveFilters,
+      categoryCounts, hasActiveFilters, activeFilterCount,
+      isFilterOpen, priceRange, sortBy, priceRanges, sortOptions,
       displayedItems, visibleCount, showMore,
       reviews, currentReview, reviewDirection, goToReview, nextReview, prevReview,
       feedback, feedbackErrors, hoverRating, submitFeedback,
       cart, isCartOpen, toast, cartCount, cartTotal,
       checkoutStep, orderType, customer, formErrors,
       // actions
-      toggleFilter, selectSize, resetFilters,
+      selectSize, resetFilters,
       currentPrice, currentOldPrice, isOnSale, discountPercent, formatPrice,
-      openItem, closeItem, scrollTop, goToCategory,
+      openItem, closeItem, scrollTop,
       goToSlide, nextSlide, prevSlide,
       addToCart, changeQty, removeLine, clearCart, checkout,
     };

@@ -24,7 +24,7 @@
     <transition name="loader">
       <div v-if="isLoading" class="loader-screen fixed inset-0 z-[100] flex flex-col items-center justify-center">
         <div class="loader-logo overflow-hidden rounded-full">
-          <img src="download.png"
+          <img src="https://images.pexels.com/photos/6046747/pexels-photo-6046747.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=176&w=176"
                alt="شعار مذاق الدار" class="h-full w-full object-cover" />
         </div>
         <h2 class="mt-5 text-2xl font-bold text-[color:var(--green-900)]">مذاق الدار</h2>
@@ -38,26 +38,14 @@
       <div class="mx-auto flex h-16 w-full items-center justify-between gap-3 px-4 sm:px-6 lg:px-10">
         <a href="#" class="flex items-center gap-2.5" @click.prevent="scrollTop">
           <span class="nav-logo overflow-hidden rounded-full">
-            <img src="download.png"
-                 alt="شعار مذاق الدار" class="h-full w-full object-cover" />
+            <img src="https://images.pexels.com/photos/6046747/pexels-photo-6046747.jpeg?auto=compress&cs=tinysrgb&dpr=1&h=96&w=96"
+                 alt="شعار مذاق الدار" class="h-full w-full object-cover" loading="lazy" />
           </span>
           <span class="nav-brand text-lg font-bold">مذاق الدار</span>
         </a>
 
-        <!-- Desktop category links -->
-        <ul class="hidden items-center gap-1 lg:flex">
-          <li v-for="cat in categories" :key="'nav-' + cat.id">
-            <button class="nav-link rounded-full px-4 py-1.5 text-sm font-medium transition"
-                    :class="{ 'nav-link-active': activeCategory === cat.id, 'nav-link-offers': cat.id === 'offers' }"
-                    @click="goToCategory(cat.id)">
-              <span v-if="cat.id === 'offers'" class="offers-spark" aria-hidden="true"></span>
-              {{ cat.label }}
-            </button>
-          </li>
-        </ul>
-
         <div class="flex items-center gap-2.5">
-          <span class="nav-status hidden sm:inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold">
+          <span class="nav-status inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold">
             <span class="live-dot live-dot-sm"></span>
             مفتوح الآن
           </span>
@@ -73,48 +61,15 @@
             <span v-if="cartCount" class="cart-badge">{{ formatPrice(cartCount) }}</span>
           </button>
 
-          <a href="tel:+201000000000" aria-label="اتصل بنا" class="nav-cta hidden sm:inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition">
+          <a href="tel:+201000000000" aria-label="اتصل بنا" class="nav-cta inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                  stroke-linecap="round" stroke-linejoin="round">
               <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" />
             </svg>
-            <span class="hidden md:inline">اتصل بنا</span>
+            <span class="hidden sm:inline">اتصل بنا</span>
           </a>
-
-          <!-- Mobile menu toggle -->
-          <button class="nav-burger lg:hidden inline-flex items-center justify-center rounded-full transition"
-                  aria-label="القائمة" @click="isMobileMenuOpen = !isMobileMenuOpen">
-            <svg v-if="!isMobileMenuOpen" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="18" y2="18" />
-            </svg>
-            <svg v-else class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 6 6 18" /><path d="m6 6 12 12" />
-            </svg>
-          </button>
         </div>
       </div>
-
-      <!-- Mobile dropdown menu -->
-      <transition name="drop">
-        <div v-if="isMobileMenuOpen" class="mobile-menu lg:hidden px-4 pb-4">
-          <ul class="flex flex-col gap-1 pt-2">
-            <li v-for="cat in categories" :key="'m-nav-' + cat.id">
-              <button class="mobile-link flex w-full items-center gap-2 rounded-xl px-4 py-2.5 text-right text-sm font-medium transition"
-                      :class="{ 'mobile-link-active': activeCategory === cat.id, 'mobile-link-offers': cat.id === 'offers' }"
-                      @click="goToCategory(cat.id); isMobileMenuOpen = false">
-                <svg v-if="cat.id === 'offers'" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z" />
-                  <circle cx="7.5" cy="7.5" r=".5" fill="currentColor" />
-                </svg>
-                {{ cat.label }}
-              </button>
-            </li>
-          </ul>
-        </div>
-      </transition>
     </nav>
 
     <!-- ================= HERO (rotating image slider) ================= -->
@@ -147,8 +102,8 @@
 
       <div class="relative z-10 flex flex-col items-center px-4 pt-24 pb-12 sm:pt-28 sm:pb-14 text-center">
         <div class="brand-logo overflow-hidden rounded-full shadow-lg">
-          <img src="download.png"
-               alt="شعار مذاق الدار" class="h-full w-full object-cover" />
+          <img src="https://images.pexels.com/photos/6046747/pexels-photo-6046747.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=176&w=176"
+               alt="شعار مذاق الدار" class="h-full w-full object-cover" loading="lazy" />
         </div>
 
         <h1 class="restaurant-name mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold text-white">مذاق الدار</h1>
@@ -224,41 +179,15 @@
 
         <div class="filter-divider"></div>
 
-        <!-- Quick filter chips row -->
+        <!-- Results & clear row -->
         <div class="flex flex-wrap items-center gap-2.5 px-5 py-3.5 sm:px-6">
           <span class="filter-label inline-flex items-center gap-1.5 text-xs font-semibold">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                  stroke-linecap="round" stroke-linejoin="round">
               <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
             </svg>
-            تصفية سريعة
+            نتائج البحث
           </span>
-
-          <!-- <button v-for="f in quickFilters" :key="f.id"
-                  class="chip inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition"
-                  :class="{ 'chip-active': activeFilters.includes(f.id) }"
-                  @click="toggleFilter(f.id)">
-            <svg v-if="activeFilters.includes(f.id)" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 6 9 17l-5-5" />
-            </svg>
-            <template v-else>
-              <svg v-if="f.id === 'hot'" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
-              </svg>
-              <svg v-else-if="f.id === 'bestseller'" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"
-                   stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-              </svg>
-              <svg v-else class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
-                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
-              </svg>
-            </template>
-            {{ f.label }}
-          </button> -->
 
           <transition name="fade-scale">
             <button v-if="hasActiveFilters" class="clear-filters-btn inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold transition"
@@ -286,7 +215,6 @@
                  @click="openItem(item)" @keydown.enter="openItem(item)">
           <div class="card-media">
             <img :src="item.image" :alt="item.name" loading="lazy" />
-            <span v-if="item.badge" class="card-badge" :class="'badge-' + item.badge.type">{{ item.badge.label }}</span>
             <span v-if="isOnSale(item)" class="sale-badge">
               <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                    stroke-linecap="round" stroke-linejoin="round">
@@ -383,10 +311,7 @@
           </button>
 
           <div class="modal-media relative">
-            <img :src="selectedItem.image" :alt="selectedItem.name" />
-            <span v-if="selectedItem.badge" class="card-badge" :class="'badge-' + selectedItem.badge.type">
-              {{ selectedItem.badge.label }}
-            </span>
+            <img :src="selectedItem.image" :alt="selectedItem.name" loading="lazy" />
             <span v-if="isOnSale(selectedItem)" class="sale-badge sale-badge-lg">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                    stroke-linecap="round" stroke-linejoin="round">
@@ -430,13 +355,6 @@
                 </svg>
                 {{ formatPrice(selectedItem.rating) }}
               </span>
-            </div>
-
-            <div class="mt-6">
-              <h4 class="text-sm font-semibold">المكونات</h4>
-              <ul class="mt-2.5 flex flex-wrap gap-2">
-                <li v-for="ing in selectedItem.ingredients" :key="ing" class="ingredient-chip">{{ ing }}</li>
-              </ul>
             </div>
 
             <div v-if="selectedItem.sizes" class="mt-6">
@@ -525,7 +443,7 @@
             <template v-if="cart.length">
               <transition-group name="cart-line">
                 <div v-for="line in cart" :key="line.key" class="cart-line">
-                  <img :src="line.image" :alt="line.name" class="cart-thumb" />
+                  <img :src="line.image" :alt="line.name" class="cart-thumb" loading="lazy" />
                   <div class="min-w-0 flex-1">
                     <div class="flex items-start justify-between gap-2">
                       <h4 class="truncate text-sm font-semibold">{{ line.name }}</h4>
@@ -703,6 +621,136 @@
         </aside>
       </div>
     </transition>
+
+    <!-- ================= FILTER DRAWER ================= -->
+    <transition name="filter">
+      <div v-if="isFilterOpen" class="modal-backdrop fixed inset-0 z-[95]" @click.self="isFilterOpen = false">
+        <aside class="filter-drawer fixed flex flex-col" role="dialog" aria-modal="true" aria-label="تصفية القائمة">
+          <!-- Header -->
+          <div class="filter-drawer-header flex items-center justify-between px-5 py-4">
+            <h3 class="flex items-center gap-2.5 text-lg font-bold">
+              <span class="filter-header-icon flex items-center justify-center rounded-xl">
+                <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="21" x2="14" y1="4" y2="4" /><line x1="10" x2="3" y1="4" y2="4" />
+                  <line x1="21" x2="12" y1="12" y2="12" /><line x1="8" x2="3" y1="12" y2="12" />
+                  <line x1="21" x2="16" y1="20" y2="20" /><line x1="12" x2="3" y1="20" y2="20" />
+                  <line x1="14" x2="14" y1="2" y2="6" /><line x1="8" x2="8" y1="10" y2="14" /><line x1="16" x2="16" y1="18" y2="22" />
+                </svg>
+              </span>
+              تصفية القائمة
+            </h3>
+            <button class="cart-close flex items-center justify-center rounded-full transition" aria-label="إغلاق التصفية"
+                    @click="isFilterOpen = false">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 6 6 18" /><path d="m6 6 12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Body -->
+          <div class="flex-1 overflow-y-auto px-5 py-5">
+            <!-- Search -->
+            <div class="drawer-search flex items-center gap-2.5 rounded-2xl px-4 py-3">
+              <svg class="w-4.5 h-4.5 shrink-0 text-[color:var(--muted)]" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
+              </svg>
+              <input v-model="searchQuery" type="text" placeholder="ابحث عن طبقك المفضل"
+                     class="w-full bg-transparent text-sm outline-none placeholder:text-[color:var(--muted)]" />
+              <button v-show="searchQuery" @click="searchQuery = ''" aria-label="مسح البحث" class="clear-btn shrink-0 rounded-full p-1 transition">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 6 6 18" /><path d="m6 6 12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Categories -->
+            <div class="mt-6">
+              <h4 class="drawer-section-title">الأقسام</h4>
+              <div class="mt-3 grid grid-cols-2 gap-2">
+                <button v-for="cat in categories" :key="'fd-' + cat.id"
+                        class="drawer-option flex items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-medium transition"
+                        :class="{ 'drawer-option-active': activeCategory === cat.id, 'drawer-option-offers': cat.id === 'offers' && activeCategory === cat.id }"
+                        @click="activeCategory = cat.id">
+                  <span class="flex items-center gap-1.5">
+                    <svg v-if="cat.id === 'offers'" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z" />
+                      <circle cx="7.5" cy="7.5" r=".5" fill="currentColor" />
+                    </svg>
+                    {{ cat.label }}
+                  </span>
+                  <span class="tab-count">{{ formatPrice(categoryCounts[cat.id]) }}</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Price range -->
+            <div class="mt-6">
+              <h4 class="drawer-section-title">نطاق السعر</h4>
+              <div class="mt-3 grid grid-cols-2 gap-2">
+                <button v-for="r in priceRanges" :key="'fd-pr-' + r.id"
+                        class="drawer-option justify-center rounded-xl px-3.5 py-2.5 text-sm font-medium transition text-center"
+                        :class="{ 'drawer-option-active': priceRange === r.id }"
+                        @click="priceRange = r.id">
+                  {{ r.label }}
+                </button>
+              </div>
+            </div>
+
+            <!-- Sort -->
+            <div class="mt-6">
+              <h4 class="drawer-section-title">الترتيب حسب</h4>
+              <div class="mt-3 flex flex-col gap-2">
+                <button v-for="s in sortOptions" :key="'fd-s-' + s.id"
+                        class="drawer-option flex items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-medium transition"
+                        :class="{ 'drawer-option-active': sortBy === s.id }"
+                        @click="sortBy = s.id">
+                  {{ s.label }}
+                  <svg v-if="sortBy === s.id" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                       stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="filter-drawer-footer flex items-center gap-3 px-5 pb-6 pt-4">
+            <button class="reset-icon-btn flex items-center justify-center rounded-full transition" aria-label="إعادة تعيين التصفية"
+                    @click="resetFilters">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                <path d="M3 3v5h5" />
+              </svg>
+            </button>
+            <button class="continue-btn flex flex-1 items-center justify-center gap-2 rounded-full py-3.5 text-base font-semibold transition"
+                    @click="isFilterOpen = false">
+              عرض النتائج
+              <span class="results-pill">{{ formatPrice(filteredItems.length) }}</span>
+            </button>
+          </div>
+        </aside>
+      </div>
+    </transition>
+
+    <!-- Floating filter button (bottom-right) -->
+    <button class="filter-fab fixed z-[80] flex items-center justify-center rounded-full transition"
+            aria-label="فتح قائمة التصفية" @click="isFilterOpen = true">
+      <svg class="w-5.5 h-5.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <line x1="21" x2="14" y1="4" y2="4" /><line x1="10" x2="3" y1="4" y2="4" />
+        <line x1="21" x2="12" y1="12" y2="12" /><line x1="8" x2="3" y1="12" y2="12" />
+        <line x1="21" x2="16" y1="20" y2="20" /><line x1="12" x2="3" y1="20" y2="20" />
+        <line x1="14" x2="14" y1="2" y2="6" /><line x1="8" x2="8" y1="10" y2="14" /><line x1="16" x2="16" y1="18" y2="22" />
+      </svg>
+      <span v-if="activeFilterCount" class="cart-badge">{{ formatPrice(activeFilterCount) }}</span>
+    </button>
 
     <!-- Floating cart button -->
     <transition name="fab">
