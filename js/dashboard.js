@@ -339,13 +339,34 @@ createApp({
       }
     };
 
+    /* ---------- Image loading indicators ---------- */
+
+    // Capture-phase listener: catches 'load' for every <img>, including future ones
+    const markImgLoaded = (e) => {
+      const el = e.target;
+      if (el && el.tagName === 'IMG') el.classList.add('img-loaded');
+    };
+
+    const sweepLoadedImages = () => {
+      document.querySelectorAll('img').forEach((img) => {
+        if (img.complete && img.naturalWidth > 0) img.classList.add('img-loaded');
+      });
+    };
+
     onMounted(() => {
       window.addEventListener('keydown', onKeydown);
+      document.addEventListener('load', markImgLoaded, true);
+      document.addEventListener('error', markImgLoaded, true); // hide spinner on failure too
+      sweepLoadedImages();
       // Dismiss the loading screen once everything is ready
       setTimeout(() => { isLoading.value = false; }, 1100);
     });
 
-    onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
+    onBeforeUnmount(() => {
+      window.removeEventListener('keydown', onKeydown);
+      document.removeEventListener('load', markImgLoaded, true);
+      document.removeEventListener('error', markImgLoaded, true);
+    });
 
     /* ---------- Site settings ---------- */
 

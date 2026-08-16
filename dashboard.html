@@ -36,7 +36,7 @@
       <div class="flex items-center gap-3">
         <span class="side-logo overflow-hidden rounded-full">
           <img src="https://images.pexels.com/photos/6046747/pexels-photo-6046747.jpeg?auto=compress&cs=tinysrgb&dpr=1&h=96&w=96"
-               alt="شعار مذاق الدار" class="h-full w-full object-cover" />
+               alt="شعار مذاق الدار" class="h-full w-full object-cover" loading="lazy" />
         </span>
         <div>
           <h1 class="text-lg font-bold">مذاق الدار — لوحة الإدارة</h1>
@@ -588,7 +588,7 @@
           <!-- Product image -->
           <div class="prod-modal-media relative">
             <img :src="selectedProduct.image.replace('h=96&w=96', 'h=400&w=800')" :alt="selectedProduct.name"
-                 class="h-52 w-full object-cover sm:h-60" />
+                 class="h-52 w-full object-cover sm:h-60" loading="lazy" />
             <span v-if="selectedProduct.discount" class="prod-modal-sale">خصم {{ fmt(selectedProduct.discount) }}٪</span>
           </div>
 

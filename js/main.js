@@ -467,6 +467,23 @@ createApp({
       window.open(`https://wa.me/${RESTAURANT_WHATSAPP}?text=${encodeURIComponent(message)}`, '_blank');
     };
 
+    /* ---------- Image loading indicators ---------- */
+
+    // Marks an <img> as loaded so CSS can hide its spinner and fade it in.
+    // Attached in the capture phase: 'load' doesn't bubble, but capturing
+    // catches it for every image — including ones Vue renders later.
+    const markImgLoaded = (e) => {
+      const el = e.target;
+      if (el && el.tagName === 'IMG') el.classList.add('img-loaded');
+    };
+
+    // Images served from cache may already be complete before the listener sees them
+    const sweepLoadedImages = () => {
+      document.querySelectorAll('img').forEach((img) => {
+        if (img.complete && img.naturalWidth > 0) img.classList.add('img-loaded');
+      });
+    };
+
     /* ---------- Lifecycle ---------- */
 
     onMounted(() => {
@@ -486,6 +503,11 @@ createApp({
       initPwa();
       window.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('keydown', onKeydown);
+
+      // Image loading indicators
+      document.addEventListener('load', markImgLoaded, true);
+      document.addEventListener('error', markImgLoaded, true); // hide spinner on failure too
+      sweepLoadedImages();
     });
 
     onBeforeUnmount(() => {
@@ -493,6 +515,8 @@ createApp({
       stopReviewSlider();
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('keydown', onKeydown);
+      document.removeEventListener('load', markImgLoaded, true);
+      document.removeEventListener('error', markImgLoaded, true);
     });
 
     /* ---------- Navbar ---------- */

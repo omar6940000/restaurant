@@ -1247,6 +1247,81 @@ body.no-scroll { overflow: hidden; }
 .confirm-cancel:hover { background: var(--surface-soft); border-color: var(--muted); }
 
 /* =====================================================
+   IMAGE LOADING INDICATORS (skeleton + spinner)
+   ===================================================== */
+
+@keyframes img-shimmer {
+  0%   { background-position: 150% 0; }
+  100% { background-position: -50% 0; }
+}
+
+@keyframes img-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Skeleton shimmer behind every media container */
+.card-media,
+.modal-media {
+  background: linear-gradient(100deg, var(--line) 40%, var(--surface-soft) 50%, var(--line) 60%);
+  background-size: 200% 100%;
+  animation: img-shimmer 1.4s linear infinite;
+}
+
+/* Circular spinner centered in the media area */
+.card-media::before,
+.modal-media::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  inset-inline-start: 50%;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin-top: -0.875rem;
+  margin-inline-start: -0.875rem;
+  border: 3px solid rgba(76, 107, 60, 0.22);
+  border-top-color: var(--green-700);
+  border-radius: 50%;
+  animation: img-spin 0.8s linear infinite;
+  z-index: 0;
+}
+
+/* Images stay invisible until loaded, then fade in over the spinner */
+.card-media img,
+.modal-media img {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.card-media img { position: absolute; } /* keep original layout behavior */
+
+.card-media img.img-loaded,
+.modal-media img.img-loaded { opacity: 1; }
+
+/* Stop the animations once the image is in (saves CPU) */
+.card-media:has(img.img-loaded),
+.modal-media:has(img.img-loaded) { animation: none; }
+
+.card-media:has(img.img-loaded)::before,
+.modal-media:has(img.img-loaded)::before { display: none; }
+
+/* Standalone images (thumbnails & logos): shimmer as background until pixels render */
+.cart-thumb,
+.brand-logo img,
+.nav-logo img,
+.confirm-logo img {
+  background: linear-gradient(100deg, var(--line) 40%, var(--surface-soft) 50%, var(--line) 60%);
+  background-size: 200% 100%;
+  animation: img-shimmer 1.4s linear infinite;
+}
+
+.cart-thumb.img-loaded,
+.brand-logo img.img-loaded,
+.nav-logo img.img-loaded,
+.confirm-logo img.img-loaded { animation: none; background: none; }
+
+/* =====================================================
    TOAST NOTIFICATION
    ===================================================== */
 
