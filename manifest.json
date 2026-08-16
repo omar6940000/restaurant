@@ -9,12 +9,6 @@
       "type": "image/png",
       "purpose": "any"
     },
-    {
-      "src": "./download1.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    }
   ],
   "start_url": "/",
   "display": "standalone",
