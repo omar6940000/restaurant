@@ -4,7 +4,7 @@
   "icons": [
     {
       "src": "./download.png",
-      "sizes": "200x200",
+      "sizes": "200x150",
       "type": "image/png",
       "purpose": "any"
     },
