@@ -1,23 +1,27 @@
-
 {
-  "name": "مذاق الدار | قائمة الطعام",
+  "name": "مذاق الدار — قائمة الطعام",
   "short_name": "مذاق الدار",
+  "description": "قائمة طعام مطعم مذاق الدار — اطلب أشهى الأطباق الشرقية",
+  "dir": "rtl",
+  "lang": "ar",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F7F4EF",
+  "theme_color": "#33491F",
   "icons": [
     {
-      "src": "./download.png",
-      "sizes": "150x150",
-      "type": "image/png",
+      "src": "https://images.pexels.com/photos/6046747/pexels-photo-6046747.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=192&w=192",
+      "sizes": "192x192",
+      "type": "image/jpeg",
       "purpose": "any"
     },
     {
-      "src": "./download1.png",
+      "src": "https://images.pexels.com/photos/6046747/pexels-photo-6046747.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=512&w=512",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/jpeg",
       "purpose": "any"
     }
-  ],
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000"
+  ]
 }
