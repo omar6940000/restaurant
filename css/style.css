@@ -1189,6 +1189,64 @@ body.no-scroll { overflow: hidden; }
 }
 
 /* =====================================================
+   PWA INSTALL BUTTON (navbar)
+   ===================================================== */
+
+.nav-install {
+  position: relative;
+  background: linear-gradient(135deg, #E08856, var(--terracotta));
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 5px 16px -5px rgba(161, 77, 42, 0.65);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.nav-install:hover { transform: translateY(-1px); box-shadow: 0 8px 20px -6px rgba(161, 77, 42, 0.75); }
+.nav-install:active { transform: scale(0.95); }
+
+/* Shine sweep to draw attention */
+.nav-install::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  inset-inline-start: -60%;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  transform: skewX(-20deg);
+  animation: sale-shine 3s ease-in-out infinite;
+}
+
+/* Compact on very small screens: icon only */
+@media (max-width: 420px) {
+  .nav-install { padding: 0.55rem; }
+  .nav-install span { display: none; }
+}
+
+/* Install confirmation dialog */
+.confirm-panel {
+  border-radius: 1.75rem !important;
+  max-height: none;
+}
+
+.confirm-logo {
+  width: 4rem;
+  height: 4rem;
+  border: 2px solid var(--green-100);
+  box-shadow: 0 8px 20px -8px rgba(51, 73, 31, 0.35);
+}
+
+.confirm-cancel {
+  background: transparent;
+  border: 1.5px solid var(--line);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.confirm-cancel:hover { background: var(--surface-soft); border-color: var(--muted); }
+
+/* =====================================================
    TOAST NOTIFICATION
    ===================================================== */
 

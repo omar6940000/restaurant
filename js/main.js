@@ -483,6 +483,7 @@ createApp({
 
       startSlider();
       startReviewSlider();
+      initPwa();
       window.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('keydown', onKeydown);
     });
@@ -500,6 +501,57 @@ createApp({
 
     const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
+    /* ---------- PWA: install app (navbar button) ---------- */
+
+    const isStandalone = () =>
+      window.matchMedia('(display-mode: standalone)').matches ||
+      window.navigator.standalone === true;
+
+    // The button is permanently visible on all devices — hidden only after installation
+    const isAppInstalled = ref(isStandalone());
+    const showInstallConfirm = ref(false);
+    let deferredPrompt = null;
+
+    // Capture the native prompt when the browser provides it (no UI dependency)
+    const onBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+    };
+
+    // Hide the button permanently once the app is installed
+    const onAppInstalled = () => {
+      deferredPrompt = null;
+      isAppInstalled.value = true;
+      showInstallConfirm.value = false;
+      showToast('تم تثبيت التطبيق بنجاح 🎉');
+    };
+
+    // User approved in the confirmation dialog → trigger installation directly
+    const confirmInstall = async () => {
+      showInstallConfirm.value = false;
+
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          isAppInstalled.value = true;
+        }
+        deferredPrompt = null;
+      } else {
+        showToast('التثبيت غير متاح على هذا المتصفح حالياً');
+      }
+    };
+
+    const initPwa = () => {
+      // Register the service worker (required for installability)
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      }
+
+      window.addEventListener('beforeinstallprompt', onBeforeInstallPrompt);
+      window.addEventListener('appinstalled', onAppInstalled);
+    };
+
 
 
     /* ---------- Product modal ---------- */
@@ -512,6 +564,7 @@ createApp({
 
     const onKeydown = (e) => {
       if (e.key === 'Escape') {
+        if (showInstallConfirm.value) { showInstallConfirm.value = false; return; }
         if (selectedItem.value) { closeItem(); return; }
         if (isCartOpen.value)   { isCartOpen.value = false; return; }
         if (isFilterOpen.value) { isFilterOpen.value = false; }
@@ -684,6 +737,7 @@ createApp({
       selectSize, resetFilters,
       currentPrice, currentOldPrice, isOnSale, discountPercent, formatPrice,
       openItem, closeItem, scrollTop,
+      isAppInstalled, showInstallConfirm, confirmInstall,
       goToSlide, nextSlide, prevSlide,
       addToCart, changeQty, removeLine, clearCart, checkout,
     };

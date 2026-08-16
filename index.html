@@ -59,6 +59,20 @@
             مفتوح الآن
           </span>
 
+          <!-- Install app button (PWA) — permanently visible until installed -->
+          <transition name="fade-scale">
+            <button v-if="!isAppInstalled"
+                    class="nav-install inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold transition"
+                    aria-label="تثبيت التطبيق" @click="showInstallConfirm = true">
+              <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" /><line x1="12" x2="12" y1="15" y2="3" />
+              </svg>
+              <span>تثبيت التطبيق</span>
+            </button>
+          </transition>
+
           <!-- Cart button -->
           <button class="nav-cart relative inline-flex items-center justify-center rounded-full transition"
                   aria-label="سلة الطلبات" @click="isCartOpen = true">
@@ -778,59 +792,34 @@
       </button>
     </transition>
 
-    <!-- ================= PWA INSTALL BANNER ================= -->
-    <transition name="install">
-      <div v-if="showInstallBanner" class="install-banner fixed z-[85] flex items-center gap-3 rounded-2xl p-3.5">
-        <span class="install-logo overflow-hidden rounded-xl">
-          <img src="https://images.pexels.com/photos/6046747/pexels-photo-6046747.jpeg?auto=compress&cs=tinysrgb&dpr=1&h=96&w=96"
-               alt="شعار مذاق الدار" class="h-full w-full object-cover" loading="lazy" />
-        </span>
-        <div class="min-w-0 flex-1">
-          <p class="text-sm font-bold">ثبّت تطبيق مذاق الدار</p>
-          <p class="mt-0.5 text-xs text-[color:var(--muted)]">اطلب أسرع من شاشتك الرئيسية — بدون متجر تطبيقات</p>
-        </div>
-        <button class="install-btn inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition"
-                @click="installApp">
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-               stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-            <polyline points="7 10 12 15 17 10" /><line x1="12" x2="12" y1="15" y2="3" />
-          </svg>
-          تثبيت
-        </button>
-        <button class="install-dismiss shrink-0 rounded-full p-1.5 transition" aria-label="إغلاق"
-                @click="dismissInstallBanner">
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-               stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 6 6 18" /><path d="m6 6 12 12" />
-          </svg>
-        </button>
-      </div>
-    </transition>
-
-    <!-- iOS install instructions modal -->
+    <!-- Install confirmation dialog -->
     <transition name="modal">
-      <div v-if="showIosGuide" class="modal-backdrop fixed inset-0 z-[95] flex items-end sm:items-center justify-center p-0 sm:p-6"
-           @click.self="showIosGuide = false">
-        <div class="modal-panel relative w-full sm:max-w-sm" role="dialog" aria-modal="true">
+      <div v-if="showInstallConfirm" class="modal-backdrop fixed inset-0 z-[95] flex items-center justify-center p-4"
+           @click.self="showInstallConfirm = false">
+        <div class="modal-panel confirm-panel relative w-full max-w-sm" role="dialog" aria-modal="true">
           <div class="p-6 sm:p-7 text-center">
-            <span class="ios-guide-icon mx-auto flex items-center justify-center rounded-2xl">
-              <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                   stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 3v12" /><path d="m8 7 4-4 4 4" />
-                <path d="M20 21H4a2 2 0 0 1-2-2V11a2 2 0 0 1 2-2h3" /><path d="M17 9h3a2 2 0 0 1 2 2v8" />
-              </svg>
+            <span class="confirm-logo mx-auto block overflow-hidden rounded-2xl">
+              <img src="https://images.pexels.com/photos/6046747/pexels-photo-6046747.jpeg?auto=compress&cs=tinysrgb&dpr=1&h=128&w=128"
+                   alt="شعار مذاق الدار" class="h-full w-full object-cover" loading="lazy" />
             </span>
-            <h3 class="mt-4 text-lg font-bold">تثبيت التطبيق على آيفون</h3>
-            <ol class="ios-steps mt-4 flex flex-col gap-3 text-right text-sm">
-              <li><span class="step-num">١</span> اضغط على زر المشاركة <strong>⎋</strong> في شريط سفاري</li>
-              <li><span class="step-num">٢</span> اختر «إضافة إلى الشاشة الرئيسية»</li>
-              <li><span class="step-num">٣</span> اضغط «إضافة» — وستجد التطبيق على شاشتك</li>
-            </ol>
-            <button class="modal-done mt-6 w-full rounded-full py-3 text-sm font-semibold transition"
-                    @click="showIosGuide = false">
-              فهمت
-            </button>
+            <h3 class="mt-4 text-lg font-bold">تثبيت التطبيق</h3>
+            <p class="mt-1.5 text-sm text-[color:var(--muted)]">هل تريد تثبيت تطبيق مذاق الدار على جهازك؟</p>
+
+            <div class="mt-6 flex gap-2.5">
+              <button class="modal-done flex flex-1 items-center justify-center gap-2 rounded-full py-3 text-sm font-semibold transition"
+                      @click="confirmInstall">
+                <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" /><line x1="12" x2="12" y1="15" y2="3" />
+                </svg>
+                نعم، ثبّت
+              </button>
+              <button class="confirm-cancel flex-1 rounded-full py-3 text-sm font-semibold transition"
+                      @click="showInstallConfirm = false">
+                ليس الآن
+              </button>
+            </div>
           </div>
         </div>
       </div>
