@@ -531,10 +531,18 @@ createApp({
       window.matchMedia('(display-mode: standalone)').matches ||
       window.navigator.standalone === true;
 
-    // The button is permanently visible on all devices — hidden only after installation
-    const isAppInstalled = ref(isStandalone());
+    // True only for real phones/tablets — desktop never shows the install button,
+    // even if the browser window is resized to a narrow width
+    const isMobileDevice = ref(
+      /android|iphone|ipad|ipod|windows phone|mobile|tablet/i.test(navigator.userAgent) ||
+      (navigator.maxTouchPoints > 1 && window.matchMedia('(pointer: coarse)').matches)
+    );
+
+    // Install flow state: 'idle' → 'installing' → 'installed' → 'done' (button removed)
+    const installState = ref(isStandalone() ? 'done' : 'idle');
     const showInstallConfirm = ref(false);
     let deferredPrompt = null;
+    let installedHideTimer = null;
 
     // Capture the native prompt when the browser provides it (no UI dependency)
     const onBeforeInstallPrompt = (e) => {
@@ -542,26 +550,45 @@ createApp({
       deferredPrompt = e;
     };
 
-    // Hide the button permanently once the app is installed
+    // Show "تم التثبيت" briefly, then remove the button
+    const markInstalled = () => {
+      installState.value = 'installed';
+      showToast('تم تثبيت التطبيق بنجاح 🎉');
+      clearTimeout(installedHideTimer);
+      installedHideTimer = setTimeout(() => { installState.value = 'done'; }, 2500);
+    };
+
+    // Fired by the browser when the download/installation completes
     const onAppInstalled = () => {
       deferredPrompt = null;
-      isAppInstalled.value = true;
       showInstallConfirm.value = false;
-      showToast('تم تثبيت التطبيق بنجاح 🎉');
+      markInstalled();
     };
 
     // User approved in the confirmation dialog → trigger installation directly
     const confirmInstall = async () => {
       showInstallConfirm.value = false;
 
+      // "جاري التثبيت..." appears immediately upon approval
+      installState.value = 'installing';
+      showToast('جاري التثبيت...');
+
       if (deferredPrompt) {
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-          isAppInstalled.value = true;
-        }
         deferredPrompt = null;
+
+        if (outcome === 'accepted') {
+          // Wait for the 'appinstalled' event; fall back in case it never fires
+          setTimeout(() => {
+            if (installState.value === 'installing') markInstalled();
+          }, 6000);
+        } else {
+          // User dismissed the native popup — back to idle
+          installState.value = 'idle';
+        }
       } else {
+        installState.value = 'idle';
         showToast('التثبيت غير متاح على هذا المتصفح حالياً');
       }
     };
@@ -761,7 +788,7 @@ createApp({
       selectSize, resetFilters,
       currentPrice, currentOldPrice, isOnSale, discountPercent, formatPrice,
       openItem, closeItem, scrollTop,
-      isAppInstalled, showInstallConfirm, confirmInstall,
+      installState, showInstallConfirm, confirmInstall, isMobileDevice,
       goToSlide, nextSlide, prevSlide,
       addToCart, changeQty, removeLine, clearCart, checkout,
     };
