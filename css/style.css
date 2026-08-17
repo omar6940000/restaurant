@@ -289,25 +289,6 @@ body {
   padding: 0.3rem 0.8rem;
 }
 
-/* Quick filter chips */
-.chip {
-  background: var(--surface-soft);
-  border: 1px solid var(--line);
-  color: var(--ink);
-  cursor: pointer;
-}
-
-.chip:hover { border-color: var(--green-700); background: var(--green-100); }
-
-.chip-active {
-  background: var(--green-800);
-  border-color: var(--green-800);
-  color: #fff;
-  box-shadow: 0 4px 12px -3px rgba(64, 91, 51, 0.45);
-}
-
-.chip-active:hover { background: var(--green-900); }
-
 /* Clear-all filters button */
 .clear-filters-btn {
   background: transparent;
@@ -379,22 +360,6 @@ body {
   height: 100%;
   object-fit: cover;
 }
-
-.card-badge {
-  position: absolute;
-  top: 0.65rem;
-  inset-inline-start: 0.65rem;
-  padding: 0.2rem 0.7rem;
-  border-radius: var(--radius-pill);
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-}
-
-.badge-hot        { background: var(--red-badge); }
-.badge-veg        { background: var(--green-700); }
-.badge-bestseller { background: #2E2A24; }
 
 /* Sale / discount ribbon — bold & unmissable */
 .sale-badge {
@@ -842,13 +807,6 @@ body.no-scroll { overflow: hidden; }
   pointer-events: none;
 }
 
-.modal-media .card-badge {
-  top: 1rem;
-  inset-inline-start: 1rem;
-  font-size: 0.78rem;
-  padding: 0.28rem 0.85rem;
-}
-
 .modal-close {
   width: 2.5rem;
   height: 2.5rem;
@@ -878,15 +836,6 @@ body.no-scroll { overflow: hidden; }
   color: var(--ink);
 }
 .meta-chip svg { color: var(--green-700); }
-
-.ingredient-chip {
-  padding: 0.3rem 0.85rem;
-  border-radius: var(--radius-pill);
-  background: var(--green-100);
-  color: var(--green-900);
-  font-size: 0.78rem;
-  font-weight: 500;
-}
 
 .modal-size-chip {
   min-width: 5.25rem;
@@ -1730,35 +1679,67 @@ body.no-scroll { overflow: hidden; }
 }
 
 /* =====================================================
-   LOAD MORE BUTTON
+   SHOW MORE BUTTON (premium)
    ===================================================== */
 
-.load-more-btn {
-  background: var(--surface);
-  border: 1.5px solid var(--line);
-  color: var(--green-900);
+.show-more-btn {
+  background: linear-gradient(135deg, var(--green-700) 0%, var(--green-900) 100%);
+  color: #F3EFE6;
   cursor: pointer;
-  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  box-shadow:
+    0 12px 28px -10px rgba(51, 73, 31, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
-.load-more-btn:hover {
-  border-color: var(--green-800);
-  background: var(--green-100);
-  transform: translateY(-2px);
+.show-more-btn:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 18px 36px -12px rgba(51, 73, 31, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
-.load-more-count {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 1.5rem;
-  height: 1.5rem;
-  padding: 0 0.35rem;
-  border-radius: var(--radius-pill);
-  background: var(--green-800);
+.show-more-btn:active { transform: translateY(-1px) scale(0.98); }
+
+/* Soft shine sweep across the button */
+.show-more-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  inset-inline-start: -60%;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+  transform: skewX(-20deg);
+  animation: sale-shine 3.2s ease-in-out infinite;
+}
+
+/* Icon capsule at the button's edge */
+.show-more-icon {
+  width: 2.4rem;
+  height: 2.4rem;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   color: #fff;
-  font-size: 0.72rem;
-  font-weight: 700;
+}
+
+.show-more-btn:hover .show-more-icon {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+/* Progress indicator under the button */
+.show-more-progress { width: 11rem; }
+
+.show-more-track {
+  height: 0.3rem;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.show-more-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green-700), var(--green-900));
+  transition: width 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* =====================================================

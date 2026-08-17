@@ -2,7 +2,7 @@
    مذاق الدار — Service Worker (PWA installability + offline shell)
    ===================================================== */
 
-const CACHE_NAME = 'mazaq-aldar-v1';
+const CACHE_NAME = 'mazaq-aldar-v2';
 const SHELL = ['./', './index.html', './css/style.css', './js/main.js'];
 
 self.addEventListener('install', (event) => {

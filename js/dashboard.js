@@ -50,7 +50,7 @@ createApp({
 
     const filteredCategories = computed(() =>
       categoryFilter.value
-        ? menuCategories.filter((c) => c.name.includes(categoryFilter.value))
+        ? menuCategories.filter((c) => matches(c.name, categoryFilter.value))
         : menuCategories
     );
 
@@ -166,10 +166,10 @@ createApp({
 
     const filteredProducts = computed(() =>
       products.filter((p) => {
-        // Name or description (same search input)
+        // Name or description (same search input, Arabic-insensitive)
         if (productFilters.name &&
-            !p.name.includes(productFilters.name) &&
-            !p.description.includes(productFilters.name)) return false;
+            !matches(p.name, productFilters.name) &&
+            !matches(p.description, productFilters.name)) return false;
 
         // Category
         if (productFilters.category !== 'all' && p.category !== productFilters.category) return false;
@@ -317,7 +317,7 @@ createApp({
 
     const filteredMessages = computed(() =>
       customerReviews.filter((r) => {
-        if (messageFilters.name && !r.name.includes(messageFilters.name)) return false;
+        if (messageFilters.name && !matches(r.name, messageFilters.name)) return false;
         if (messageFilters.read === 'read' && !r.read) return false;
         if (messageFilters.read === 'unread' && r.read) return false;
         return true;
@@ -456,6 +456,17 @@ createApp({
 
     const fmt = (value) =>
       new Intl.NumberFormat('ar-EG', { useGrouping: false }).format(value);
+
+    // Arabic-insensitive matching: unifies أ/إ/آ→ا, ة→ه, ى→ي and strips tashkeel
+    const normalize = (str) =>
+      String(str)
+        .replace(/[أإآ]/g, 'ا')
+        .replace(/ة/g, 'ه')
+        .replace(/ى/g, 'ي')
+        .replace(/[\u064B-\u065F]/g, '')
+        .trim();
+
+    const matches = (text, query) => normalize(text).includes(normalize(query));
 
     return {
       views, activeView, isLoading, todayLabel, toast,

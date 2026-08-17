@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>مذاق الدار | قائمة الطعام</title>
+  <meta name="description" content="قائمة طعام مطعم مذاق الدار — أطباق شرقية أصيلة، مشاوي على الفحم، مقبلات وعصائر طازجة. اطلب الآن عبر واتساب." />
+  <link rel="icon" href="https://images.pexels.com/photos/6046747/pexels-photo-6046747.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=48&w=48" />
 
   <!-- PWA -->
   <link rel="manifest" href="manifest.json" />
@@ -27,6 +29,19 @@
 </head>
 
 <body>
+  <!-- Shown only if the app fails to boot (hidden by default) -->
+  <div id="boot-fallback" style="display:none" class="fixed inset-0 z-[110] flex-col items-center justify-center gap-3 bg-[#F7F4EF] p-6 text-center">
+    <p style="font-size:2.5rem">🍽️</p>
+    <h2 class="text-xl font-bold text-[#33491F]">مذاق الدار</h2>
+    <p class="text-sm text-[#9A9184]">تعذر تحميل الصفحة — تحقق من اتصالك بالإنترنت ثم أعد المحاولة</p>
+    <button onclick="location.reload()" class="mt-2 rounded-full bg-[#33491F] px-6 py-2.5 text-sm font-semibold text-white">إعادة التحميل</button>
+  </div>
+  <noscript>
+    <div style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#F7F4EF;font-family:sans-serif;text-align:center;padding:1.5rem">
+      <p>يتطلب هذا الموقع تفعيل JavaScript لعرض قائمة الطعام.</p>
+    </div>
+  </noscript>
+
   <div id="app" v-cloak>
 
     <!-- ================= LOADING SCREEN ================= -->
@@ -307,21 +322,32 @@
         </article>
       </transition-group>
 
-      <!-- Load more -->
-      <div v-if="filteredItems.length > visibleCount" class="mt-8 flex justify-center">
-        <button class="load-more-btn inline-flex items-center gap-2.5 rounded-full px-8 py-3 text-sm font-semibold transition"
+      <!-- Show more dishes (premium design) -->
+      <div v-if="filteredItems.length > visibleCount" class="mt-10 flex flex-col items-center gap-3">
+        <button class="show-more-btn group relative inline-flex items-center gap-3 rounded-full py-3.5 ps-7 pe-3 text-base font-bold transition"
                 @click="showMore">
-          <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-               stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 5v14" /><path d="m19 12-7 7-7-7" />
-          </svg>
           عرض المزيد من الأطباق
-          <span class="load-more-count">{{ formatPrice(filteredItems.length - visibleCount) }}</span>
+          <span class="show-more-icon flex items-center justify-center rounded-full transition">
+            <svg class="w-4.5 h-4.5 transition-transform group-hover:translate-y-0.5" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 5v14" /><path d="m19 12-7 7-7-7" />
+            </svg>
+          </span>
         </button>
+
+        <!-- Progress: shown X of Y -->
+        <div class="show-more-progress">
+          <div class="show-more-track rounded-full">
+            <div class="show-more-fill rounded-full" :style="{ width: (visibleCount / filteredItems.length * 100) + '%' }"></div>
+          </div>
+          <p class="mt-2 text-center text-xs text-[color:var(--muted)]">
+            يعرض {{ formatPrice(shownCount) }} من {{ formatPrice(filteredItems.length) }} طبق
+          </p>
+        </div>
       </div>
 
-      <!-- Empty state -->
-      <div v-else class="empty-state mx-auto mt-8 max-w-md rounded-3xl p-10 text-center">
+      <!-- Empty state (explicit condition, independent of the elements above) -->
+      <div v-if="!filteredItems.length" class="empty-state mx-auto mt-8 max-w-md rounded-3xl p-10 text-center">
         <svg class="mx-auto w-14 h-14 text-[color:var(--muted)]" viewBox="0 0 24 24" fill="none"
              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
@@ -1128,8 +1154,27 @@
     </footer>
   </div>
 
-  <!-- Vue 3 (CDN) -->
-  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <!-- Vue 3 (CDN with fallback) -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+  <script>
+    // Fallback CDN in case the primary one is blocked or unreachable
+    if (typeof Vue === 'undefined') {
+      document.write('<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"><\/script>');
+    }
+  </script>
   <script src="js/main.js"></script>
+  <script>
+    // Boot guard: if Vue failed to mount (CDN blocked, JS error), reveal a helpful
+    // message instead of an endless blank page hidden by v-cloak.
+    function revealBootFallback() {
+      var app = document.getElementById('app');
+      var splash = document.getElementById('boot-fallback');
+      if (app && app.hasAttribute('v-cloak') && splash) splash.style.display = 'flex';
+    }
+    setTimeout(revealBootFallback, 6000);
+    // Any uncaught error before mount → show the fallback immediately
+    window.addEventListener('error', function () { revealBootFallback(); });
+    window.addEventListener('unhandledrejection', function () { revealBootFallback(); });
+  </script>
 </body>
 </html>

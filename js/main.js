@@ -513,8 +513,12 @@ createApp({
     onBeforeUnmount(() => {
       stopSlider();
       stopReviewSlider();
+      clearTimeout(toastTimer);
+      clearTimeout(installedHideTimer);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('keydown', onKeydown);
+      window.removeEventListener('beforeinstallprompt', onBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', onAppInstalled);
       document.removeEventListener('load', markImgLoaded, true);
       document.removeEventListener('error', markImgLoaded, true);
     });
@@ -594,8 +598,9 @@ createApp({
     };
 
     const initPwa = () => {
-      // Register the service worker (required for installability)
-      if ('serviceWorker' in navigator) {
+      // Register the service worker (required for installability).
+      // Guarded: SW only works over http(s), so avoid errors on file:// previews.
+      if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
         navigator.serviceWorker.register('sw.js').catch(() => {});
       }
 
@@ -692,7 +697,7 @@ createApp({
       return result;
     });
 
-    /* ---------- Pagination: 8 products per screen ---------- */
+    /* ---------- "Show more": 8 products, then load 8 more per click ---------- */
 
     const PAGE_SIZE = 8;
     const visibleCount = ref(PAGE_SIZE);
@@ -701,7 +706,12 @@ createApp({
 
     const showMore = () => { visibleCount.value += PAGE_SIZE; };
 
-    // Reset pagination whenever the filters change
+    // Number of dishes actually shown (never exceeds the result count)
+    const shownCount = computed(() =>
+      Math.min(visibleCount.value, filteredItems.value.length)
+    );
+
+    // Reset whenever the filters change
     watch([searchQuery, activeCategory, priceRange, sortBy], () => {
       visibleCount.value = PAGE_SIZE;
     });
@@ -756,9 +766,9 @@ createApp({
       let price, old;
       if (item.sizes) {
         const size = item.sizes.find((s) => s.label === selectedSizes[item.id]) || item.sizes[0];
-        const ref = size.oldPrice ? size : item.sizes.find((s) => s.oldPrice);
-        if (!ref) return 0;
-        price = ref.price; old = ref.oldPrice;
+        const refSize = size.oldPrice ? size : item.sizes.find((s) => s.oldPrice);
+        if (!refSize) return 0;
+        price = refSize.price; old = refSize.oldPrice;
       } else {
         if (!item.oldPrice) return 0;
         price = item.price; old = item.oldPrice;
@@ -779,7 +789,7 @@ createApp({
       selectedSizes, filteredItems, currentSlide,
       categoryCounts, hasActiveFilters, activeFilterCount,
       isFilterOpen, priceRange, sortBy, priceRanges, sortOptions,
-      displayedItems, visibleCount, showMore,
+      displayedItems, visibleCount, showMore, shownCount,
       reviews, currentReview, reviewDirection, goToReview, nextReview, prevReview,
       feedback, feedbackErrors, hoverRating, submitFeedback,
       cart, isCartOpen, toast, cartCount, cartTotal,
