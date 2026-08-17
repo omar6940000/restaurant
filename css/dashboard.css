@@ -99,6 +99,18 @@ body {
   border: 1px solid var(--line);
 }
 
+/* Back-to-website button */
+.view-site-btn {
+  background: var(--green-800);
+  color: #fff;
+  box-shadow: 0 4px 14px -4px rgba(51, 73, 31, 0.5);
+}
+
+.view-site-btn:hover {
+  background: var(--green-900);
+  transform: translateY(-1px);
+}
+
 .admin-avatar {
   width: 2.1rem;
   height: 2.1rem;

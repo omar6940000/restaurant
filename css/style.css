@@ -606,6 +606,21 @@ html[dir="rtl"] .sale-badge::before {
   transform: translateY(-2px);
 }
 
+/* Dashboard access link (footer) */
+.dashboard-link {
+  background: var(--surface);
+  border: 1.5px dashed var(--line);
+  color: var(--muted);
+}
+
+.dashboard-link:hover {
+  border-style: solid;
+  border-color: var(--green-800);
+  background: var(--green-100);
+  color: var(--green-900);
+  transform: translateY(-1px);
+}
+
 /* =====================================================
    FULL-WIDTH GRID (wide screens)
    ===================================================== */
