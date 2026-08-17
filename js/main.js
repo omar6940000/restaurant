@@ -330,7 +330,7 @@ createApp({
 
     /* ---------- Cart (order collection) ---------- */
 
-    const RESTAURANT_WHATSAPP = '201000000000'; // رقم واتساب المطعم
+    const RESTAURANT_WHATSAPP = '201280402765'; // رقم واتساب المطعم
 
     const cart = ref([]);
     const isCartOpen = ref(false);
